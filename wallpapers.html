@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photos-Boobs Lens</title>
+<link rel="icon" type="image/x-icon" href="logo.jpeg">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #0a0a0f;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0c0;
+  --accent: #7b61ff;
+  --accent-glow: rgba(123, 97, 255, 0.5);
+  --glass: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-primary: #f5f5f7;
+    --text-primary: #1a1a2e;
+    --text-secondary: #5a5a6e;
+    --glass: rgba(0, 0, 0, 0.03);
+    --border: rgba(0, 0, 0, 0.08);
+  }
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-primary);
+  background-image: url('wall05.jpeg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  z-index: -1;
+}
+
+/* Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 5%;
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 35px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after, .nav-links a.active::after {
+  width: 100%;
+}
+
+/* Main */
+.container {
+  max-width: 1400px;
+  margin: 60px auto;
+  padding: 0 5%;
+}
+
+.page-title {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  text-align: center;
+  background: linear-gradient(135deg, #fff, #b0b0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.page-desc {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 50px;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.wallpaper-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.wallpaper-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 25px 60px rgba(123, 97, 255, 0.4);
+  border-color: var(--accent);
+}
+
+.card-img {
+  width: 100%;
+  aspect-ratio: 9/16;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  cursor: pointer;
+}
+
+.wallpaper-card:hover .card-img {
+  transform: scale(1.08);
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  padding: 25px 20px;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+
+.wallpaper-card:hover .card-overlay {
+  transform: translateY(0);
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.card-info {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 15px;
+}
+
+/* Download Button - A tag එකට style */
+.download-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #7b61ff, #9d7bff);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(123, 97, 255, 0.6);
+}
+
+/* Lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 10001;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox.show {
+  display: flex;
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 20px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  font-size: 2.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="wallpapers.html" class="active">Photos</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="page-title">Download Your Best Boobs</h1>
+  <p class="page-desc">High quality boobs photos for you. Tap to preview, click download to save HD version.</p>
+
+  <div class="grid" id="wallpaperGrid">
+    
+    <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="1.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('1.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="1.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="2.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('2.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="2.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="3.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('3.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="3.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="4.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('4.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="4.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="5.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('5.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="5.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="6.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('6.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="6.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="7.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('7.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="7.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="8.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('8.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="8.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="9.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('9.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="9.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="10.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('10.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="10.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="11.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('11.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="11.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="12.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('12.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="12.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="13.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('13.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="13.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="14.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('14.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="14.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="15.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('15.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="15.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="16.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('16.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="16.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="17.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('17.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="17.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="18.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('18.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="18.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="19.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('19.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="19.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="20.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('20.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="20.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="21.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('21.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="21.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="22.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('22.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="22.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="23.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('23.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="23.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="24.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('24.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="24.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="25.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('25.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="25.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="26.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('26.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="26.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="27.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('27.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="27.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="28.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('28.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="28.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="29.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('29.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="29.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="30.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('30.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="30.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="31.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('31.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="31.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="32.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('32.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="32.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="33.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('33.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="33.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="34.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('34.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="34.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="35.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('35.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="35.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="36.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('36.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="36.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="37.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('37.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="37.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="38.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('38.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="38.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="39.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('39.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="39.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="40.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('40.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="40.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="41.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('41.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="41.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="42.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('42.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="42.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="43.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('43.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="43.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="44.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('44.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="44.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="45.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('45.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="45.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="46.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('46.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="46.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="47.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('47.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="47.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="48.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('48.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="48.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="49.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('49.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="49.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="50.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('50.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="50.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="51.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('51.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="51.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="52.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('52.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="52.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="53.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('53.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="53.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="54.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('54.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="54.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="55.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('55.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="55.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="56.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('56.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="56.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="57.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('57.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="57.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="58.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('58.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="58.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="59.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('59.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="59.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="60.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('60.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="60.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="61.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('61.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="61.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="62.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('62.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="62.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="63.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('63.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="63.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="64.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('64.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="64.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="65.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('65.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="65.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="66.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('66.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="66.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="67.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('67.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="67.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="68.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('68.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="68.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="69.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('69.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="69.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="70.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('70.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="70.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="71.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('71.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="71.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="72.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('72.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="2.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+        <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="73.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('73.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="73.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="74.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('74.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="74.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="75.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('75.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="75.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="76.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('76.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="76.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="77.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('77.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="77.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="78.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('78.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="78.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="79.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('79.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="79.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+            <!-- WALLPAPER 1 - 1.jpg -->
+    <div class="wallpaper-card">
+      <img src="80.jpg" alt="Night City Samurai" class="card-img" onclick="openLightbox('80.jpg')">
+      <div class="card-overlay">
+        <div class="card-title">Boobs Lens</div>
+        <div class="card-info">4K • 2160x3840 • 2.3MB</div>
+        <!-- DOWNLOAD LINK - මේක තමයි fix එක -->
+        <a href="80.jpg" download="Boobs Lens Original.jpg" class="download-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 20h14v-2H5v2zm7-18v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="close-btn">&times;</span>
+  <img class="lightbox-content" id="lightboxImg">
+</div>
+
+<script>
+// Lightbox only - Download JS අයින් කරා
+function openLightbox(imgPath) {
+  document.getElementById('lightbox').classList.add('show');
+  document.getElementById('lightboxImg').src = imgPath;
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+}
+</script>
+</body>
+</html>
